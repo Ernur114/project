@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Мои задачи</h1>
+
+<a href="{% url 'task_create' %}">Создать задачу</a> |
+<a href="{% url 'logout' %}">Выйти</a>
+
+<form method="get">
+  <select name="status">
+    <option value="">Все</option>
+    <option value="new">Новые</option>
+    <option value="in_progress">В работе</option>
+    <option value="done">Сделанные</option>
+  </select>
+  <select name="ordering">
+    <option value="due_date">По сроку</option>
+    <option value="-due_date">По сроку (обратно)</option>
+  </select>
+  <button type="submit">Фильтр</button>
+</form>
+
+<ul>
+  {% for task in tasks %}
+    <li>
+      <strong>{{ task.title }}</strong> — {{ task.status }} — {{ task.due_date }}
+      {% if task.is_overdue %}<span style="color:red;">[ПРОСРОЧЕНО]</span>{% endif %}
+      <div>
+        <a href="{% url 'task_update' task.pk %}">Изменить</a>
+        <a href="{% url 'task_delete' task.pk %}">Удалить</a>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+
+</body>
+</html>
